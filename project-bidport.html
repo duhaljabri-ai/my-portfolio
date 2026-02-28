@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BidPort — Duha Graphics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="logowhite.png">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--navy:#1B2A4A;--navy-dark:#111C33;--yellow:#F5C542;--blue-medium:#5BA4D9;--blue-deep:#3A7BD5;--blue-soft:rgba(91,164,217,.1);--bg:#f5f9ee;--white:#FFFFFF;--gray-mid:#777;--transition:all 0.4s cubic-bezier(0.25,0.46,0.45,0.94)}
+        html{scroll-behavior:smooth}body{font-family:'Outfit',sans-serif;background:var(--bg);color:#1A1A2E;overflow-x:hidden;line-height:1.6}
+        .nav{position:fixed;top:0;left:0;width:100%;padding:20px 60px;display:flex;justify-content:space-between;align-items:center;z-index:1000;transition:var(--transition);background:rgba(245,249,238,.75);backdrop-filter:blur(24px);border-bottom:1px solid rgba(27,42,74,.03)}.nav.scrolled{background:rgba(255,255,255,.9);padding:14px 60px;box-shadow:0 4px 40px rgba(27,42,74,.05)}.nav-logo{display:flex;align-items:center;gap:14px;text-decoration:none}.nav-logo img{height:36px;filter:brightness(0.3)}.nav-logo-text{font-size:.95rem;font-weight:700;color:var(--navy);letter-spacing:3px;text-transform:uppercase}.nav-logo-text span{color:var(--blue-medium);font-weight:300;font-size:.68rem;letter-spacing:2px;display:block;margin-top:-1px}.nav-links{display:flex;gap:32px;list-style:none}.nav-links a{text-decoration:none;color:var(--navy);font-size:.8rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;position:relative;padding-bottom:6px;transition:var(--transition)}.nav-links a::after{content:'';position:absolute;bottom:0;left:50%;width:0;height:2px;background:var(--yellow);transition:all .3s ease;transform:translateX(-50%)}.nav-links a:hover::after{width:100%}.hamburger{display:none;flex-direction:column;gap:6px;cursor:pointer;z-index:1001}.hamburger span{width:26px;height:2px;background:var(--navy);transition:var(--transition)}.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,6px);background:var(--yellow)}.hamburger.active span:nth-child(2){opacity:0}.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-6px);background:var(--yellow)}.mobile-menu{display:none;position:fixed;top:0;left:0;width:100%;height:100vh;background:linear-gradient(135deg,var(--navy-dark),var(--navy));z-index:999;flex-direction:column;justify-content:center;align-items:center;gap:24px;opacity:0;transform:translateY(-100%);transition:all .6s ease}.mobile-menu.active{opacity:1;transform:translateY(0)}.mobile-menu a{text-decoration:none;color:var(--white);font-size:1.5rem;font-weight:300;letter-spacing:5px;transition:var(--transition)}.mobile-menu a:hover{color:var(--yellow)}
+
+        .back-link{max-width:1100px;margin:0 auto;padding:110px 60px 0;display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:var(--gray-mid);font-size:.82rem;letter-spacing:1px;transition:var(--transition)}.back-link:hover{color:var(--navy);gap:12px}.back-link::before{content:'←'}
+        .project-hero{max-width:1100px;margin:0 auto;padding:30px 60px 60px}
+        .project-hero .tag{display:inline-block;padding:5px 14px;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;font-weight:700;background:var(--blue-soft);color:var(--blue-deep);margin-bottom:14px}
+        .project-hero h1{font-size:2.8rem;font-weight:800;color:var(--navy);margin-bottom:14px;line-height:1.15}
+        .project-hero .desc{font-size:.95rem;color:var(--gray-mid);max-width:700px;line-height:1.9;font-weight:300;margin-bottom:24px}
+        .project-meta{display:flex;gap:30px;flex-wrap:wrap}
+        .meta-item label{font-size:.6rem;color:var(--gray-mid);letter-spacing:2px;text-transform:uppercase;font-weight:600;display:block;margin-bottom:3px}
+        .meta-item p{font-size:.88rem;color:var(--navy);font-weight:600}
+        .project-images{max-width:1100px;margin:0 auto;padding:0 60px 80px}
+        .pi-grid{display:grid;gap:16px;margin-bottom:16px}
+        .pi-grid.g1{grid-template-columns:1fr}.pi-grid.g2{grid-template-columns:repeat(2,1fr)}.pi-grid.g3{grid-template-columns:repeat(3,1fr)}
+        .pi-card{overflow:hidden;background:var(--white);transition:all .5s ease;opacity:0;transform:translateY(30px)}
+        .pi-card.visible{opacity:1;transform:translateY(0)}
+        .pi-card:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(27,42,74,.07)}
+        .pi-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s ease}
+        .pi-card:hover img{transform:scale(1.04)}
+        .pi-label{max-width:1100px;margin:0 auto;padding:0 60px;font-size:.7rem;color:var(--blue-medium);letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-bottom:12px;margin-top:30px}
+        .next-project{max-width:1100px;margin:0 auto;padding:40px 60px 80px;text-align:center}
+        .next-project a{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:var(--navy);font-size:.85rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:14px 32px;border:1.5px solid rgba(27,42,74,.1);transition:var(--transition)}
+        .next-project a:hover{background:var(--navy);color:var(--white);border-color:var(--navy);gap:16px}
+        .next-project a::after{content:'→'}
+        .footer{background:var(--navy-dark);padding:48px 60px;position:relative}.footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(245,197,66,.2),rgba(91,164,217,.2),transparent)}.footer-content{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:30px}.footer-logo{display:flex;align-items:center;gap:12px}.footer-logo img{height:28px;filter:brightness(2)}.footer-logo-text{font-size:.82rem;font-weight:600;color:var(--white);letter-spacing:2px}.footer-center{text-align:center}.footer-text{font-size:.75rem;color:rgba(255,255,255,.25)}.footer-nav{display:flex;gap:22px;list-style:none;justify-content:flex-end}.footer-nav a{text-decoration:none;color:rgba(255,255,255,.3);font-size:.75rem;letter-spacing:1px;transition:var(--transition)}.footer-nav a:hover{color:var(--yellow)}
+        @media(max-width:768px){.nav{padding:14px 24px}.nav-links{display:none}.hamburger{display:flex}.mobile-menu{display:flex}.back-link{padding:100px 24px 0}.project-hero{padding:20px 24px 40px}.project-hero h1{font-size:2rem}.project-images{padding:0 24px 60px}.pi-grid.g2,.pi-grid.g3{grid-template-columns:1fr}.pi-label{padding:0 24px}.next-project{padding:30px 24px 60px}.footer{padding:36px 24px}.footer-content{grid-template-columns:1fr;text-align:center;gap:14px}.footer-nav{justify-content:center}}
+    </style>
+</head>
+<body>
+    <nav class="nav" id="navbar"><a href="index.html" class="nav-logo"><img src="logowhite.png" alt="Duha Graphics"><div class="nav-logo-text">DUHA GRAPHICS<span>portfolio</span></div></a><ul class="nav-links"><li><a href="index.html">Hello</a></li><li><a href="about.html">Meet Duha</a></li><li><a href="projects.html">My Craft</a></li><li><a href="services.html">Let's Create</a></li><li><a href="contact.html">Say Hi</a></li></ul><div class="hamburger" id="hamburger"><span></span><span></span><span></span></div></nav>
+    <div class="mobile-menu" id="mobileMenu"><a href="index.html">Hello</a><a href="about.html">Meet Duha</a><a href="projects.html">My Craft</a><a href="services.html">Let's Create</a><a href="contact.html">Say Hi</a></div>
+
+    <a href="projects.html" class="back-link">Back to All Projects</a>
+
+    <section class="project-hero">
+        <div class="tag">UI/UX + Branding</div>
+        <h1>BidPort — Online Car Auction</h1>
+        <p class="desc">BidPort is Lebanon's first dedicated online car auction platform. Users download the app, browse live auctions, and buy or sell cars, motorcycles, and buses with transparent pricing and a small platform fee. The design breaks away from typical automotive aesthetics with a fresh teal-and-orange color scheme, intuitive vehicle finder, and streamlined bidding experience.</p>
+        <div class="project-meta">
+            <div class="meta-item"><label>Client</label><p>Startup Project</p></div>
+            <div class="meta-item"><label>Role</label><p>UI/UX & Brand Designer</p></div>
+            <div class="meta-item"><label>Tools</label><p>Figma · Illustrator · Photoshop</p></div>
+            <div class="meta-item"><label>Year</label><p>2024</p></div>
+        </div>
+    </section>
+
+    <div class="pi-label">Brand & Logo</div>
+    <div class="project-images">
+        <div class="pi-grid g1"><div class="pi-card" data-animate><img src="logomockupibdport.png" alt="BidPort Logo"></div></div>
+    </div>
+
+    <div class="pi-label">App Interface</div>
+    <div class="project-images">
+        <div class="pi-grid g2"><div class="pi-card" data-animate><img src="appmockup1.png" alt="App 1"></div><div class="pi-card" data-animate><img src="appmockup2.png" alt="App 2"></div></div>
+        <div class="pi-grid g1"><div class="pi-card" data-animate><img src="interfacemockup.png" alt="Interface"></div></div>
+    </div>
+
+    <div class="pi-label">Social Media & Marketing</div>
+    <div class="project-images">
+        <div class="pi-grid g2"><div class="pi-card" data-animate><img src="apppostermockup.png" alt="Poster"></div><div class="pi-card" data-animate><img src="socialmediapost0.png" alt="Social"></div></div>
+    </div>
+
+    <div class="next-project"><a href="project-hushed.html">Next Project: Hushed Voices</a></div>
+
+    <footer class="footer"><div class="footer-content"><div class="footer-logo"><img src="logowhite.png" alt="Duha Graphics"><span class="footer-logo-text">DUHA GRAPHICS</span></div><div class="footer-center"><p class="footer-text">© 2025 Duha Al Jabri</p></div><ul class="footer-nav"><li><a href="index.html">Hello</a></li><li><a href="projects.html">My Craft</a></li><li><a href="contact.html">Say Hi</a></li></ul></div></footer>
+
+    <script>
+        window.addEventListener('scroll',()=>{document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>80)});
+        const hb=document.getElementById('hamburger'),mm=document.getElementById('mobileMenu');
+        hb.addEventListener('click',()=>{hb.classList.toggle('active');mm.classList.toggle('active')});
+        mm.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{hb.classList.remove('active');mm.classList.remove('active')}));
+        const obs=new IntersectionObserver(e=>{e.forEach((en,i)=>{if(en.isIntersecting){setTimeout(()=>{en.target.classList.add('visible')},i*100);obs.unobserve(en.target)}})},{threshold:.08});
+        document.querySelectorAll('[data-animate]').forEach(el=>obs.observe(el));
+    </script>
+</body>
+</html>

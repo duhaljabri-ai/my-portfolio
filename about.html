@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meet Duha — Duha Graphics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="logowhite.png">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--navy:#1B2A4A;--navy-dark:#111C33;--yellow:#F5C542;--yellow-soft:rgba(245,197,66,.1);--blue-light:#87CEEB;--blue-medium:#5BA4D9;--blue-deep:#3A7BD5;--blue-soft:rgba(91,164,217,.1);--bg:#f5f9ee;--bg-dark:#eaf2e3;--white:#FFFFFF;--gray-mid:#777;--transition:all 0.4s cubic-bezier(0.25,0.46,0.45,0.94);--bounce:cubic-bezier(0.34,1.56,0.64,1)}
+        html{scroll-behavior:smooth}
+        body{font-family:'Outfit',sans-serif;background:var(--bg);color:#1A1A2E;overflow-x:hidden;line-height:1.6}
+
+        .nav{position:fixed;top:0;left:0;width:100%;padding:20px 60px;display:flex;justify-content:space-between;align-items:center;z-index:1000;transition:var(--transition);background:rgba(245,249,238,.75);backdrop-filter:blur(24px);border-bottom:1px solid rgba(27,42,74,.03)}
+        .nav.scrolled{background:rgba(255,255,255,.9);padding:14px 60px;box-shadow:0 4px 40px rgba(27,42,74,.05)}
+        .nav-logo{display:flex;align-items:center;gap:14px;text-decoration:none}
+        .nav-logo img{height:36px;filter:brightness(0.3)}
+        .nav-logo-text{font-size:.95rem;font-weight:700;color:var(--navy);letter-spacing:3px;text-transform:uppercase}
+        .nav-logo-text span{color:var(--blue-medium);font-weight:300;font-size:.68rem;letter-spacing:2px;display:block;margin-top:-1px}
+        .nav-links{display:flex;gap:32px;list-style:none}
+        .nav-links a{text-decoration:none;color:var(--navy);font-size:.8rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;position:relative;padding-bottom:6px;transition:var(--transition)}
+        .nav-links a::after{content:'';position:absolute;bottom:0;left:50%;width:0;height:2px;background:var(--yellow);transition:all .3s ease;transform:translateX(-50%)}
+        .nav-links a:hover::after,.nav-links a.active::after{width:100%}
+        .hamburger{display:none;flex-direction:column;gap:6px;cursor:pointer;z-index:1001}
+        .hamburger span{width:26px;height:2px;background:var(--navy);transition:var(--transition)}
+        .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,6px);background:var(--yellow)}
+        .hamburger.active span:nth-child(2){opacity:0}
+        .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-6px);background:var(--yellow)}
+        .mobile-menu{display:none;position:fixed;top:0;left:0;width:100%;height:100vh;background:linear-gradient(135deg,var(--navy-dark),var(--navy));z-index:999;flex-direction:column;justify-content:center;align-items:center;gap:24px;opacity:0;transform:translateY(-100%);transition:all .6s ease}
+        .mobile-menu.active{opacity:1;transform:translateY(0)}
+        .mobile-menu a{text-decoration:none;color:var(--white);font-size:1.5rem;font-weight:300;letter-spacing:5px;transition:var(--transition)}
+        .mobile-menu a:hover{color:var(--yellow);letter-spacing:8px}
+
+        /* HERO */
+        .about-hero{min-height:85vh;background:linear-gradient(160deg,var(--navy-dark) 0%,var(--navy) 40%,#2A3F6F 100%);display:flex;align-items:center;justify-content:center;padding:140px 60px 100px;position:relative;overflow:hidden}
+        .about-hero::before{content:'';position:absolute;top:-120px;right:-120px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(91,164,217,.1),transparent 70%);animation:drift 12s ease-in-out infinite}
+        .about-hero::after{content:'';position:absolute;bottom:-100px;left:-100px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(245,197,66,.06),transparent 70%);animation:drift 15s ease-in-out infinite reverse}
+        @keyframes drift{0%,100%{transform:translate(0,0)}33%{transform:translate(20px,-15px)}66%{transform:translate(-15px,10px)}}
+
+        .about-hero-content{max-width:1200px;width:100%;display:grid;grid-template-columns:340px 1fr;gap:80px;align-items:center;position:relative;z-index:2}
+
+        .profile-wrapper{position:relative;opacity:0;animation:profileReveal 1.2s var(--bounce) .3s forwards}
+        @keyframes profileReveal{0%{opacity:0;transform:scale(.7) translateY(30px) rotate(-5deg)}60%{transform:scale(1.02) translateY(-5px) rotate(1deg)}100%{opacity:1;transform:scale(1) translateY(0) rotate(0)}}
+        .profile-glow{position:absolute;inset:-30px;background:radial-gradient(ellipse,rgba(91,164,217,.15),transparent 70%);z-index:-2;animation:glowPulse 4s ease-in-out infinite}
+        @keyframes glowPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.06)}}
+        .profile-frame{width:300px;height:400px;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--blue-deep),var(--blue-medium));box-shadow:0 30px 60px rgba(0,0,0,.3)}
+        .profile-frame img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block;transition:transform .6s ease}
+        .profile-frame:hover img{transform:scale(1.03)}
+        .profile-accent{position:absolute;top:20px;left:20px;width:300px;height:400px;border:2px solid rgba(245,197,66,.25);z-index:-1}
+        .profile-corner-tl,.profile-corner-br{position:absolute;width:40px;height:40px;z-index:3}
+        .profile-corner-tl{top:-5px;left:-5px;border-top:3px solid var(--yellow);border-left:3px solid var(--yellow)}
+        .profile-corner-br{bottom:-5px;right:-5px;border-bottom:3px solid var(--blue-light);border-right:3px solid var(--blue-light)}
+        .profile-dots{position:absolute;bottom:-25px;right:-25px;display:grid;grid-template-columns:repeat(4,7px);gap:7px;z-index:1}
+        .profile-dots span:nth-child(odd){width:7px;height:7px;background:rgba(245,197,66,.4);border-radius:50%}
+        .profile-dots span:nth-child(even){width:7px;height:7px;background:rgba(91,164,217,.3);border-radius:50%}
+
+        .about-hero-text{opacity:0;animation:slideIn 1s ease .7s forwards}
+        @keyframes slideIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+        .about-hero-label{font-size:.7rem;color:var(--yellow);letter-spacing:5px;text-transform:uppercase;font-weight:400;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+        .about-hero-label::before{content:'';width:30px;height:1px;background:var(--yellow)}
+        .about-hero-text h1{font-size:3rem;font-weight:800;color:var(--white);margin-bottom:20px;line-height:1.15}
+        .about-hero-text h1 em{font-style:normal;color:var(--blue-light)}
+        .about-hero-text h1 .yellow{color:var(--yellow)}
+        .about-hero-text p{font-size:.98rem;color:rgba(255,255,255,.55);line-height:1.9;max-width:500px;font-weight:300}
+        .about-hero-text p strong{color:var(--white);font-weight:600}
+
+        /* INFO STRIP */
+        .info-strip{max-width:1200px;margin:-50px auto 0;padding:0 60px;position:relative;z-index:3;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+        .info-card{background:var(--white);padding:26px 22px;text-align:center;transition:var(--transition);box-shadow:0 10px 40px rgba(27,42,74,.05);opacity:0;transform:translateY(20px)}
+        .info-card.visible{opacity:1;transform:translateY(0)}
+        .info-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(27,42,74,.08)}
+        .info-card:nth-child(odd){border-top:3px solid var(--yellow)}
+        .info-card:nth-child(even){border-top:3px solid var(--blue-medium)}
+        .info-card label{font-size:.62rem;color:var(--gray-mid);letter-spacing:2px;text-transform:uppercase;font-weight:600;display:block;margin-bottom:6px}
+        .info-card p{font-size:.9rem;color:var(--navy);font-weight:600}
+
+        /* STORY */
+        .story-section{max-width:900px;margin:0 auto;padding:100px 60px 60px}
+        .story-section h2{font-size:2.2rem;font-weight:800;color:var(--navy);margin-bottom:28px;text-align:center}
+        .story-section h2 .yel{color:var(--yellow)}
+        .story-section h2 .blu{color:var(--blue-deep)}
+        .story-text{column-count:2;column-gap:40px;font-size:.92rem;color:var(--gray-mid);line-height:1.9}
+        .story-text p{margin-bottom:16px}
+        .story-text .hl-b{color:var(--blue-deep);font-weight:600}
+        .story-text .hl-y{color:#b8941e;font-weight:600}
+
+        /* TIMELINE */
+        .timeline-section{max-width:900px;margin:0 auto;padding:60px 60px 80px}
+        .timeline-section h2{font-size:2.2rem;font-weight:800;color:var(--navy);margin-bottom:50px;text-align:center}
+        .timeline{position:relative;padding-left:40px}
+        .timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--yellow),var(--blue-medium),var(--yellow),var(--blue-medium))}
+        .tl-item{position:relative;margin-bottom:38px;padding-left:35px;opacity:0;transform:translateX(-30px);transition:all .6s ease}
+        .tl-item.visible{opacity:1;transform:translateX(0)}
+        .tl-item::before{content:'';position:absolute;left:-37px;top:6px;width:14px;height:14px;border-radius:50%;border:3px solid var(--bg);z-index:1}
+        .tl-item:nth-child(odd)::before{background:var(--yellow)}
+        .tl-item:nth-child(even)::before{background:var(--blue-medium)}
+        .tl-date{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+        .tl-item:nth-child(odd) .tl-date{color:var(--yellow)}
+        .tl-item:nth-child(even) .tl-date{color:var(--blue-medium)}
+        .tl-role{font-size:1.05rem;color:var(--navy);font-weight:700;margin-bottom:2px}
+        .tl-company{font-size:.85rem;color:var(--blue-deep);font-weight:500;margin-bottom:8px}
+        .tl-desc{font-size:.84rem;color:var(--gray-mid);line-height:1.7;font-weight:300}
+
+        /* SKILLS */
+        .skills-section{background:linear-gradient(135deg,var(--navy-dark),var(--navy));padding:80px 60px;position:relative;overflow:hidden}
+        .skills-section::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(245,197,66,.04),transparent)}
+        .skills-content{max-width:900px;margin:0 auto;text-align:center;position:relative;z-index:1}
+        .skills-section h2{font-size:2.2rem;font-weight:800;color:var(--white);margin-bottom:10px}
+        .skills-sub{font-size:.88rem;color:rgba(255,255,255,.35);margin-bottom:40px;font-weight:300}
+        .skills-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:9px}
+        .skill-tag{padding:9px 20px;border:1px solid;font-size:.78rem;font-weight:400;letter-spacing:.5px;transition:var(--transition);cursor:default}
+        .skill-tag:nth-child(odd){background:rgba(245,197,66,.08);border-color:rgba(245,197,66,.15);color:var(--yellow)}
+        .skill-tag:nth-child(even){background:rgba(91,164,217,.08);border-color:rgba(91,164,217,.15);color:var(--blue-light)}
+        .skill-tag:hover{transform:translateY(-3px);border-color:transparent}
+        .skill-tag:nth-child(odd):hover{background:var(--yellow);color:var(--navy-dark)}
+        .skill-tag:nth-child(even):hover{background:var(--blue-deep);color:var(--white)}
+
+        /* EDUCATION */
+        .edu-section{max-width:900px;margin:0 auto;padding:80px 60px}
+        .edu-section h2{font-size:2.2rem;font-weight:800;color:var(--navy);margin-bottom:40px;text-align:center}
+        .edu-card{background:var(--white);padding:30px;margin-bottom:16px;transition:var(--transition);box-shadow:0 4px 20px rgba(27,42,74,.03);opacity:0;transform:translateX(-20px)}
+        .edu-card.visible{opacity:1;transform:translateX(0)}
+        .edu-card:nth-child(odd){border-left:3px solid var(--yellow)}
+        .edu-card:nth-child(even){border-left:3px solid var(--blue-medium)}
+        .edu-card:hover{transform:translateX(8px);box-shadow:0 10px 30px rgba(27,42,74,.06)}
+        .edu-date{font-size:.7rem;font-weight:700;letter-spacing:2px;margin-bottom:4px}
+        .edu-card:nth-child(odd) .edu-date{color:var(--yellow)}
+        .edu-card:nth-child(even) .edu-date{color:var(--blue-medium)}
+        .edu-title{font-size:1.02rem;color:var(--navy);font-weight:700;margin-bottom:2px}
+        .edu-school{font-size:.86rem;color:var(--blue-deep);margin-bottom:6px;font-weight:500}
+        .edu-desc{font-size:.82rem;color:var(--gray-mid);line-height:1.6;font-weight:300}
+
+        /* LANGUAGES */
+        .lang-section{max-width:900px;margin:0 auto;padding:0 60px 80px}
+        .lang-section h2{font-size:2.2rem;font-weight:800;color:var(--navy);margin-bottom:40px;text-align:center}
+        .lang-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+        .lang-card{background:var(--white);padding:26px;text-align:center;transition:var(--transition);box-shadow:0 4px 20px rgba(27,42,74,.03)}
+        .lang-card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 15px 40px rgba(27,42,74,.06)}
+        .lang-name{font-size:1.02rem;color:var(--navy);font-weight:700;margin-bottom:4px}
+        .lang-level{font-size:.8rem;color:var(--gray-mid);font-weight:300}
+        .lang-bar{width:100%;height:4px;background:rgba(27,42,74,.05);margin-top:14px;overflow:hidden;border-radius:4px}
+        .lang-card:nth-child(1) .lang-bar-fill{height:100%;width:100%;background:linear-gradient(90deg,var(--yellow),var(--yellow-hover));border-radius:4px}
+        .lang-card:nth-child(2) .lang-bar-fill{height:100%;width:90%;background:linear-gradient(90deg,var(--blue-medium),var(--blue-deep));border-radius:4px}
+        .lang-card:nth-child(3) .lang-bar-fill{height:100%;width:55%;background:linear-gradient(90deg,var(--yellow),var(--blue-medium));border-radius:4px}
+
+        /* CTA */
+        .cta-section{padding:90px 60px;background:linear-gradient(135deg,var(--navy-dark),var(--navy));text-align:center;position:relative;overflow:hidden}
+        .cta-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(245,197,66,.04),transparent)}
+        .cta-content{position:relative;z-index:2}
+        .cta-section h2{font-size:2.3rem;font-weight:800;color:var(--white);margin-bottom:14px}
+        .cta-section p{font-size:.95rem;color:rgba(255,255,255,.4);max-width:420px;margin:0 auto 30px;font-weight:300;line-height:1.7}
+        .btn-primary{padding:14px 38px;background:linear-gradient(135deg,var(--yellow),var(--yellow-hover));color:var(--navy-dark);border:none;font-size:.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:var(--transition);font-family:'Outfit',sans-serif}
+        .btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(245,197,66,.3)}
+
+        .footer{background:var(--navy-dark);padding:48px 60px;position:relative}
+        .footer::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(245,197,66,.2),rgba(91,164,217,.2),transparent)}
+        .footer-content{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:30px}
+        .footer-logo{display:flex;align-items:center;gap:12px}
+        .footer-logo img{height:28px;filter:brightness(2)}
+        .footer-logo-text{font-size:.82rem;font-weight:600;color:var(--white);letter-spacing:2px}
+        .footer-center{text-align:center}
+        .footer-text{font-size:.75rem;color:rgba(255,255,255,.25)}
+        .footer-made{font-size:.65rem;color:rgba(255,255,255,.15);margin-top:4px}
+        .footer-nav{display:flex;gap:22px;list-style:none;justify-content:flex-end}
+        .footer-nav a{text-decoration:none;color:rgba(255,255,255,.3);font-size:.75rem;letter-spacing:1px;transition:var(--transition)}
+        .footer-nav a:hover{color:var(--yellow)}
+
+        @media(max-width:1024px){.about-hero-content{grid-template-columns:1fr;text-align:center;gap:40px}.about-hero-text{text-align:center}.profile-frame{margin:0 auto;width:260px;height:340px}.profile-accent{width:260px;height:340px}.info-strip{grid-template-columns:repeat(2,1fr)}.story-text{column-count:1}}
+        @media(max-width:768px){.nav{padding:14px 24px}.nav-links{display:none}.hamburger{display:flex}.mobile-menu{display:flex}.about-hero{padding:120px 24px 70px;min-height:auto}.profile-frame{width:200px;height:270px}.profile-accent{width:200px;height:270px;top:14px;left:14px}.about-hero-text h1{font-size:2rem}.info-strip{padding:0 24px;grid-template-columns:1fr 1fr;margin-top:-30px}.story-section{padding:60px 24px 40px}.timeline-section{padding:40px 24px 60px}.skills-section{padding:60px 24px}.edu-section{padding:60px 24px}.lang-section{padding:0 24px 60px}.lang-grid{grid-template-columns:1fr}.cta-section{padding:60px 24px}.cta-section h2{font-size:1.6rem}.footer{padding:36px 24px}.footer-content{grid-template-columns:1fr;text-align:center;gap:14px}.footer-nav{justify-content:center}}
+    </style>
+</head>
+<body>
+    <nav class="nav" id="navbar"><a href="index.html" class="nav-logo"><img src="logowhite.png" alt="Duha Graphics"><div class="nav-logo-text">DUHA GRAPHICS<span>portfolio</span></div></a><ul class="nav-links"><li><a href="index.html">Hello</a></li><li><a href="about.html" class="active">Meet Duha</a></li><li><a href="projects.html">My Craft</a></li><li><a href="services.html">Let's Create</a></li><li><a href="contact.html">Say Hi</a></li></ul><div class="hamburger" id="hamburger"><span></span><span></span><span></span></div></nav>
+    <div class="mobile-menu" id="mobileMenu"><a href="index.html">Hello</a><a href="about.html">Meet Duha</a><a href="projects.html">My Craft</a><a href="services.html">Let's Create</a><a href="contact.html">Say Hi</a></div>
+
+    <section class="about-hero">
+        <div class="about-hero-content">
+            <div class="profile-wrapper">
+                <div class="profile-glow"></div>
+                <div class="profile-corner-tl"></div>
+                <div class="profile-corner-br"></div>
+                <div class="profile-frame"><img src="duhaprofile.png" alt="Duha Al Jabri"></div>
+                <div class="profile-accent"></div>
+                <div class="profile-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            </div>
+            <div class="about-hero-text">
+                <div class="about-hero-label">Nice to meet you</div>
+                <h1>I'm <em>Duha</em> <span class="yellow">Al Jabri</span></h1>
+                <p>A <strong>Beirut-based graphic designer</strong> with 3+ years of experience turning ideas into impactful visual experiences. I bring a unique blend of <strong>artistic skill and marketing strategy</strong> to every project.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="info-strip">
+        <div class="info-card" data-animate><label>Location</label><p>Beirut, Lebanon</p></div>
+        <div class="info-card" data-animate><label>Email</label><p>dohajabre1@gmail.com</p></div>
+        <div class="info-card" data-animate><label>Education</label><p>B.A. Graphic Design — LIU</p></div>
+        <div class="info-card" data-animate><label>Currently</label><p>Digital Marketing Diploma</p></div>
+    </div>
+
+    <section class="story-section">
+        <h2>My <span class="blu">Creative</span> <span class="yel">Story</span></h2>
+        <div class="story-text">
+            <p>My work spans <span class="hl-b">branding, packaging, poster design, UI/UX, illustration, storyboarding, and Arabic calligraphy</span>. I've built complete brand identities from scratch, designed smart packaging solutions, and created characters that tell emotional stories.</p>
+            <p>I leverage <span class="hl-y">AI tools</span> like ChatGPT, Claude, and Gemini to push creative boundaries — producing enhanced visuals and video content that drive real engagement.</p>
+            <p>Whether designing for a <span class="hl-b">nonprofit campaign</span>, a catering brand, or a car auction startup, I approach every project with fresh ideas and a deep respect for deadlines. Great design is about <span class="hl-y">solving problems and connecting with people</span>.</p>
+            <p>Beyond design, I'm passionate about <span class="hl-b">teaching</span>. I've led AI workshops for students, art programs for children, and I'm preparing a workshop on AI-powered branding.</p>
+        </div>
+    </section>
+
+    <section class="timeline-section">
+        <h2>Experience</h2>
+        <div class="timeline">
+            <div class="tl-item" data-animate><div class="tl-date">2022 — Present</div><div class="tl-role">Freelance Graphic Designer & Digital Marketer</div><div class="tl-company">Self-Employed</div><div class="tl-desc">Designing branding systems, social media campaigns, posters, carousels, and promotional videos for diverse clients.</div></div>
+            <div class="tl-item" data-animate><div class="tl-date">2023 — Present</div><div class="tl-role">Brand & Creative Lead</div><div class="tl-company">Towards Certainty (Nonprofit)</div><div class="tl-desc">Built the complete brand identity from scratch. Led visual direction for awareness and fundraising campaigns.</div></div>
+            <div class="tl-item" data-animate><div class="tl-date">2025 — Present</div><div class="tl-role">Calligraphy & Visual Content Designer</div><div class="tl-company">Trace of Art</div><div class="tl-desc">Creating hand-drawn Arabic calligraphy wall art and digital designs using AI tools.</div></div>
+            <div class="tl-item" data-animate><div class="tl-date">2023 — 2024</div><div class="tl-role">Social Media Manager & Graphic Designer</div><div class="tl-company">Nina Jones Firm</div><div class="tl-desc">Created social media visuals and content calendars. Monitored engagement to optimize performance.</div></div>
+            <div class="tl-item" data-animate><div class="tl-date">2024</div><div class="tl-role">Art Instructor</div><div class="tl-company">Al Muntada Youth for Youth</div><div class="tl-desc">Conducted acrylic painting workshops and guided youth through creative expression.</div></div>
+            <div class="tl-item" data-animate><div class="tl-date">Summer 2024</div><div class="tl-role">AI in Design — Instructor</div><div class="tl-company">Workshop Program</div><div class="tl-desc">6-week program teaching students aged 16–18 to use AI tools for design and academics.</div></div>
+        </div>
+    </section>
+
+    <section class="skills-section">
+        <div class="skills-content">
+            <h2>Skills & Tools</h2>
+            <p class="skills-sub">The creative toolkit behind every project</p>
+            <div class="skills-grid">
+                <span class="skill-tag">Adobe Photoshop</span><span class="skill-tag">Illustrator</span><span class="skill-tag">InDesign</span><span class="skill-tag">Premiere Pro</span><span class="skill-tag">After Effects</span><span class="skill-tag">Figma</span><span class="skill-tag">Canva</span><span class="skill-tag">CapCut</span><span class="skill-tag">Shopify</span><span class="skill-tag">Meta Business</span><span class="skill-tag">ChatGPT</span><span class="skill-tag">Claude AI</span><span class="skill-tag">Gemini</span><span class="skill-tag">Branding</span><span class="skill-tag">Typography</span><span class="skill-tag">Packaging</span><span class="skill-tag">UI/UX</span><span class="skill-tag">Motion Graphics</span><span class="skill-tag">Character Design</span><span class="skill-tag">Arabic Calligraphy</span><span class="skill-tag">Content Writing</span><span class="skill-tag">Social Media</span><span class="skill-tag">Storyboarding</span><span class="skill-tag">Illustration</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="edu-section">
+        <h2>Education</h2>
+        <div class="edu-card" data-animate><div class="edu-date">2022 — 2025</div><div class="edu-title">Bachelor's in Graphic Design</div><div class="edu-school">Lebanese International University (LIU)</div><div class="edu-desc">2D/3D Design, Typography, Branding, Packaging, Photography, Animation, Storyboarding</div></div>
+        <div class="edu-card" data-animate><div class="edu-date">2026 — Present</div><div class="edu-title">Professional Diploma — Digital Marketing</div><div class="edu-school">LAU ACE x Talentdu (PDMA Program)</div><div class="edu-desc">Advanced digital marketing strategies and campaign management.</div></div>
+        <div class="edu-card" data-animate><div class="edu-date">2024</div><div class="edu-title">Digital Marketing Course</div><div class="edu-school">Basmetex Online Firm</div><div class="edu-desc">Digital marketing fundamentals and online strategy.</div></div>
+    </section>
+
+    <section class="lang-section">
+        <h2>Languages</h2>
+        <div class="lang-grid">
+            <div class="lang-card"><div class="lang-name">Arabic</div><div class="lang-level">Native</div><div class="lang-bar"><div class="lang-bar-fill"></div></div></div>
+            <div class="lang-card"><div class="lang-name">English</div><div class="lang-level">Fluent</div><div class="lang-bar"><div class="lang-bar-fill"></div></div></div>
+            <div class="lang-card"><div class="lang-name">Turkish</div><div class="lang-level">Intermediate</div><div class="lang-bar"><div class="lang-bar-fill"></div></div></div>
+        </div>
+    </section>
+
+    <section class="cta-section"><div class="cta-content"><h2>Like What You See?</h2><p>Let's create something amazing together.</p><a href="contact.html" class="btn-primary">Say Hi ✨</a></div></section>
+
+    <footer class="footer"><div class="footer-content"><div class="footer-logo"><img src="logowhite.png" alt="Duha Graphics"><span class="footer-logo-text">DUHA GRAPHICS</span></div><div class="footer-center"><p class="footer-text">© 2025 Duha Al Jabri</p><p class="footer-made">Crafted with passion in Beirut 🇱🇧</p></div><ul class="footer-nav"><li><a href="index.html">Hello</a></li><li><a href="about.html">Meet Duha</a></li><li><a href="projects.html">My Craft</a></li><li><a href="contact.html">Say Hi</a></li></ul></div></footer>
+
+    <script>
+        window.addEventListener('scroll',()=>{document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>80)});
+        const hb=document.getElementById('hamburger'),mm=document.getElementById('mobileMenu');
+        hb.addEventListener('click',()=>{hb.classList.toggle('active');mm.classList.toggle('active')});
+        mm.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{hb.classList.remove('active');mm.classList.remove('active')}));
+        const obs=new IntersectionObserver(e=>{e.forEach((en,i)=>{if(en.isIntersecting){setTimeout(()=>{en.target.classList.add('visible')},i*100);obs.unobserve(en.target)}})},{threshold:.1});
+        document.querySelectorAll('[data-animate]').forEach(el=>obs.observe(el));
+    </script>
+</body>
+</html>
